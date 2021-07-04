@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro</title>
+    
+</head>
+<body>
+    <h1>Timer</h1>
+    <h1 id="horario">00 : 00</h1>
+    <button onclick="Timer(minutos)">Iniciar</button>
+    
+    <h1>Intervalo 5 min</h1>
+    <h1 id="horario2">05 : 00</h1>
+    <button onclick="TimerIntervalo()">Iniciar</button>
+    
+    <h1 id="cont">Quantidade de Pomodoros : 0</h1>
+    <script>
+        // https://youtu.be/_qA_qc7dIxg
+        //Informar os minutos do cronômetro
+        var minutos= Number(prompt("Informe os minutos do cronômetro:"))
+        if (minutos >= 9) {
+            document.getElementById("horario").textContent= minutos+" :  00"  
+        }
+        else{
+            //Adicionar 0, < 10
+            document.getElementById("horario").textContent= "0"+minutos+" :  00" 
+        }
+        
+        //Timer principal
+        var timer;
+        var contador=0
+        function Timer(min){
+            var minutos= min-1
+            var segundos=59
+            
+            //Colocar Delay no código
+            timer=setInterval(function(){
+                
+                //Se chegar a 00:00, para de repetir
+                if (minutos== 0 && segundos==0) {
+                    contador++
+                    document.getElementById("cont").textContent= "Quantidade de Pomodoros: "+contador
+                    if(contador ===4)
+                    {
+                        alert("Já deu 4 pomodoros... descanse por 10 min")
+                    }
+                    let context = new AudioContext(),
+                    oscillator = context.createOscillator(),
+                    contextGain = context.createGain();
+                    oscillator.connect(contextGain);
+                    contextGain.connect(context.destination);
+                    oscillator.type = 'square';
+                    oscillator.start(0);
+                    contextGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 1)
+                    clearInterval(timer)
+                }
+                //Adicionar 0 em minutos < 10 e segundos < 10
+                if (segundos >= 9 && minutos >= 9) {
+                    document.getElementById("horario").textContent= minutos+" : "+segundos
+                }
+                if(segundos <= 9 && minutos >= 9 ){
+                    document.getElementById("horario").textContent= minutos+" : 0"+segundos
+                }
+                if(segundos >= 9 && minutos <= 9){
+                    document.getElementById("horario").textContent= "0"+minutos+" : "+segundos
+                }
+                if(segundos <= 9 && minutos <= 9){
+                    document.getElementById("horario").textContent= "0"+minutos+" : 0"+segundos
+                }
+                //Decrementar no relógio a cada tempo se estiver maior que 0,
+                //caso contrário reseta os segundos e decrementa um minuto
+                if(segundos >=1) {
+                    segundos--
+                }
+                else{
+                   minutos--
+                   segundos=59
+                }
+            }, 1000)
+        }
+
+        //Timer de 5 min
+        var timer2;
+        function TimerIntervalo()
+        {
+            var minutosI=4
+            var segundosI= 59
+            //Colocar Delay no código
+            timer2=setInterval(function(){
+                //Se chegar a 00:00, para de repetir
+                if (minutosI== 0 && segundosI==0) {
+                    let context = new AudioContext(),
+                    oscillator = context.createOscillator(),
+                    contextGain = context.createGain();
+                    oscillator.connect(contextGain);
+                    contextGain.connect(context.destination);
+                    oscillator.type = 'square';
+                    oscillator.start(0);
+                    contextGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 1)
+                    clearInterval(timer2)
+                }
+                //Adicionar 0 em minutos < 10 e segundos < 10
+                if (segundosI >= 9 && minutosI >= 9) {
+                    document.getElementById("horario2").textContent= minutosI+" : "+segundosI
+                }
+                if(segundosI <= 9 && minutosI >= 9 ){
+                    document.getElementById("horario2").textContent= minutosI+" : 0"+segundosI
+                }
+                if(segundosI >= 9 && minutosI <= 9){
+                    document.getElementById("horario2").textContent= "0"+minutosI+" : "+segundosI
+                }
+                if(segundosI <= 9 && minutosI <= 9){
+                    document.getElementById("horario2").textContent= "0"+minutosI+" : 0"+segundosI
+                }
+                //Decrementar no relógio a cada tempo se estiver maior que 0,
+                //caso contrário reseta os segundos e decrementa um minuto
+                if(segundosI >=1) {
+                    segundosI--
+                }
+                else{
+                   minutosI--
+                   segundosI=59
+                }
+            }, 1000)
+        } 
+    </script>
+</body>
+</html
